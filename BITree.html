@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>BITree</title>
+</head>
+<body>
+<script type="text/javascript">
+function getPostOrder(preOrder, inOrder){
+  var valid = preOrder instanceof Array && inOrder instanceof Array;
+  if(!valid){
+    return;
+  }
+  if(preOrder.length !== inOrder.length || preOrder.length === 0){
+    return;
+  }
+	var root = new treeNode();
+	var result = [];
+	buildTree(preOrder, inOrder, root);
+  return result;
+  function treeNode(name) {
+    this.name = name;
+    this.left = {};
+    this.right = {};
+  }
+	function buildTree(preOrderList, inOrderList, rootNode){
+    if(preOrderList.length === 0){
+      return;
+    }
+		var nodeName = preOrderList[0];
+    rootNode.name = nodeName;
+    rootNode.left = new treeNode();
+    rootNode.right = new treeNode();
+    var inIndex = inOrderList.indexOf(nodeName);
+    var lChildInOrderList = inOrderList.slice(0, inIndex);
+    var rChildInOrderList = inOrderList.slice(inIndex + 1);
+    var lChildLength = lChildInOrderList.length;
+		var lChildPreOrderList = preOrderList.slice(1, inIndex + 1);
+    var rChildPreOrderList = preOrderList.slice(inIndex + 1);
+		buildTree(lChildPreOrderList, lChildInOrderList, rootNode.left);
+    buildTree(rChildPreOrderList, rChildInOrderList , rootNode.right);
+		result.push(rootNode.name);
+	}
+}
+const preOrder = ["A","B","D","H","I","E","C","F","G"];
+const inOrder = ["H","D","I","B","E","A","F","C","G"];
+const result = getPostOrder(preOrder, inOrder);
+console.log(result);
+</script>
+
+</body>
+</html>
